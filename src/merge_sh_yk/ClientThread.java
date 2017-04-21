@@ -32,10 +32,10 @@ public class ClientThread extends Thread{
 	File file;
 	
 	OutputStream output;
-	
-	
-	
-	
+	public Vector<Chat> vec = new Vector<Chat>(); //1차원
+	Chat chatDto;
+	//public Vector<Vector> data= new Vector<Vector>(); //2차원
+
 	
 	public ClientThread(Socket socket,ChatMain main) {
 		this.socket=socket;
@@ -55,6 +55,9 @@ public class ClientThread extends Thread{
 
 		JSONParser parser=new JSONParser();
 		
+		//1차원 벡터에 담을 dto을 생성하자
+		chatDto = new Chat();
+		
 		try {
 			msg=buffr.readLine();
 			
@@ -65,21 +68,21 @@ public class ClientThread extends Thread{
 			
 			if(type.equals("chat")){
 				String str=(String)obj.get("content");
-				main.chatDto.setMsg(str);
+				chatDto.setMsg(str);
+				
 				//System.out.println("서버로부터 받는 str : "+str);
 				//System.out.println("Chat main에 있는 chat"+main.chat);
-				
 				
 			}
 			else if(type.equals("time")){
 				String str=(String)obj.get("content");
 				//System.out.println("서버로부터 time받는 str : "+str);
-				main.chatDto.setTime(str);
+				chatDto.setTime(str);
 								
 			}
 			else if(type.equals("sender")){
 				String str=(String)obj.get("content");
-				main.chatDto.setSender(str);				
+				chatDto.setSender(str);				
 			}
 			else if(type.equals("join")){//접속시 아이디 부여
 				String str=(String)obj.get("content");
@@ -92,6 +95,9 @@ public class ClientThread extends Thread{
 			e.printStackTrace();
 		} catch (ParseException e) {
 			e.printStackTrace();
+		}finally{
+			vec.add(chatDto);
+			
 		}
 	}
 	

@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
-import javax.xml.ws.Holder;
 
 public class ChatRenderer implements TableCellRenderer {
 	ChatHolder holder;
@@ -15,6 +14,7 @@ public class ChatRenderer implements TableCellRenderer {
 	RightViewHolder rightHolder= new RightViewHolder();
 	Map<String, Integer> mCacheCount= new HashMap<String, Integer>();
 	ChatMain main;
+	String sender,msg,time;
 	
 	int count = 0;
 	Vector<String> dto = new Vector<>();
@@ -26,11 +26,16 @@ public class ChatRenderer implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object value,
 		boolean isSelected, boolean hasFocus, int row, int col) {
 		ChatHolder holder = null;
-		Chat chat = (Chat)value;
-		String sender = main.chatDto.getSender();
-		String msg = main.chatDto.getMsg();
-		String time = main.chatDto.getTime();
-		
+		//Chat chat = (Chat)value;
+		if(main.data.size()!=0){
+			//for(int i=0;i<main.data.size();i++){
+				sender = main.data.get(row).getSender();
+				msg =main.data.get(row).getMsg();
+				time =main.data.get(row).getTime();
+				
+				System.out.println("그리는값"+msg);
+			//}
+		}
 
 		
 		//System.out.println("렌더링에 있는 chat"+main.chat);

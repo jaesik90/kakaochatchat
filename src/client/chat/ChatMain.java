@@ -56,7 +56,8 @@ public class ChatMain extends JDialog implements ActionListener{
 	
 	KakaoMain main;
 	
-	public Chat chatDto=new Chat();
+	//public Chat chatDto=new Chat();
+	Vector<Chat> data = new Vector<Chat>();
 	
 	
 	
@@ -161,7 +162,15 @@ public class ChatMain extends JDialog implements ActionListener{
 		log.ct.sendTime(time);
 		log.ct.sendSender(sender);
 		
-		model.addRow(chatDto);
+		data = log.ct.vec;
+		
+		//System.out.println(data.size()+"2차원 배열의 숫자? 곧 대화의 갯수");
+		if(data.size()!=0){
+			System.out.println(data.get(0).getMsg()+"첫번째 대화의 대화명?");
+		}
+		
+		model.addRow(data);
+		//model.addRow(chatDto);
 		area.setText("");
 		
 		int a=table.getColumnModel().getColumnCount();

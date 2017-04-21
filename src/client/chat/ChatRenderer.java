@@ -14,9 +14,10 @@ public class ChatRenderer implements TableCellRenderer {
 	LeftViewHolder leftHolder= new LeftViewHolder();
 	RightViewHolder rightHolder= new RightViewHolder();
 	Map<String, Integer> mCacheCount= new HashMap<String, Integer>();
+	int count = 0;
+
 	ChatMain main;
 	
-	int count = 0;
 	Vector<String> dto = new Vector<>();
 	
 	public ChatRenderer(ChatMain main) {
@@ -27,13 +28,13 @@ public class ChatRenderer implements TableCellRenderer {
 		boolean isSelected, boolean hasFocus, int row, int col) {
 		ChatHolder holder = null;
 		Chat chat = (Chat)value;
-		String sender = main.chatDto.getSender();
-		String msg = main.chatDto.getMsg();
-		String time = main.chatDto.getTime();
+		String sender = chat.getSender();
+		String msg = chat.getMsg();
+		String time = chat.getTime();
 		
-
-		
-		//System.out.println("렌더링에 있는 chat"+main.chat);
+		System.out.println("센더"+chat.getSender());
+		System.out.println("메시지"+chat.getMsg());
+		System.out.println("시간"+chat.getTime());
 		
 		
 		Integer iDisplaySide = mCacheCount.get(sender);

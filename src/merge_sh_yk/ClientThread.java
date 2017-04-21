@@ -14,6 +14,7 @@ import java.util.Vector;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,10 +33,10 @@ public class ClientThread extends Thread{
 	File file;
 	
 	OutputStream output;
-	
-	
-	
-	
+	public Chat chatDto;
+	String msgValue,timeValue,senderValue;
+	JSONArray value;
+	JSONObject valueCheck;
 	
 	public ClientThread(Socket socket,ChatMain main) {
 		this.socket=socket;
@@ -54,7 +55,7 @@ public class ClientThread extends Thread{
 		String msg=null;
 
 		JSONParser parser=new JSONParser();
-		
+		chatDto=new Chat();
 		try {
 			msg=buffr.readLine();
 			
@@ -62,30 +63,78 @@ public class ClientThread extends Thread{
 			System.out.println("클라이언트  파써"+msg);
 			String type=(String)obj.get("type");
 			
-			
 			if(type.equals("chat")){
+	/*			 value=(JSONArray)obj.get("contents");
+				// for(int i=0;i<value.size();i++){
+				  valueCheck = (JSONObject)value.get(0);
+				 msgValue =(String)valueCheck.get("msg");
+				
+				 valueCheck = (JSONObject)value.get(2);
+				 timeValue =(String)valueCheck.get("time");
+				
+				 valueCheck = (JSONObject)value.get(1);
+				 senderValue =(String)valueCheck.get("sender");
+				// }
+				//System.out.println("send로 보내는 str : "+str);
+				//sendMsg(msgValue,senderValue,timeValue);
+				 
+				 System.out.println("메시지"+msgValue+" 센더"+senderValue+" 타임 "+timeValue);
+				 chatDto.setMsg(msgValue);
+				 chatDto.setSender(senderValue);
+				 chatDto.setTime(timeValue);*/
+				 value=(JSONArray)obj.get("contents");
+				 System.out.println("서버 : 파서배열"+value.size());
+				 
+				 if(value.size()!=0){
+					 for(int i=0;i<value.size();i++){
+						 System.out.println("파서의 값은?" + value.get(i));
+						 if(i==0){
+							 JSONObject json = (JSONObject)value.get(i);
+							 System.out.println("첫번째값!!!!"+json.get("msg"));
+							 msgValue=(String)json.get("msg");
+						 }else if(i==1){
+							 JSONObject json = (JSONObject)value.get(i);
+							 
+							 timeValue=(String)json.get("time");
+						 }else if(i==2){
+							 JSONObject json = (JSONObject)value.get(i);
+							 
+							 senderValue=(String)json.get("sender");
+						 }
+					 }
+					 
+					 System.out.println(msgValue+senderValue+timeValue);
+					 //sendMsg(msgValue,senderValue,timeValue);
+					 chatDto.setMsg(msgValue);
+					 chatDto.setSender(senderValue);
+					 chatDto.setTime(timeValue);
+				 }
+		
+				
+			}
+			
+			
+			
+			
+			
+	/*		if(type.equals("chat")){
 				String str=(String)obj.get("content");
-				main.chatDto.setMsg(str);
-				//System.out.println("서버로부터 받는 str : "+str);
-				//System.out.println("Chat main에 있는 chat"+main.chat);
-				
-				
+				chatDto.setMsg(str);
+
 			}
 			else if(type.equals("time")){
 				String str=(String)obj.get("content");
 				//System.out.println("서버로부터 time받는 str : "+str);
-				main.chatDto.setTime(str);
+				chatDto.setTime(str);
 								
 			}
 			else if(type.equals("sender")){
 				String str=(String)obj.get("content");
-				main.chatDto.setSender(str);				
-			}
-			else if(type.equals("join")){//접속시 아이디 부여
+				chatDto.setSender(str);				
+			}*/
+			if(type.equals("join")){//접속시 아이디 부여
 				String str=(String)obj.get("content");
 			}
-			
-			
 			
 			
 		} catch (IOException e) {
@@ -95,14 +144,27 @@ public class ClientThread extends Thread{
 		}
 	}
 	
-	public void sendMsg(String msg){
+	public void sendMsg(String msg,String time,String sender){
 		try {
-			JSONObject obj=new JSONObject();
+	/*		JSONObject obj=new JSONObject();
 			obj.put("type", "chat");
-			obj.put("content", msg);
+			obj.put("content", msg);*/
 			
-			String myString = obj.toString();
-			//System.out.println("클라이언트에서 서버로 보내는말: "+myString);
+			StringBuffer sb = new StringBuffer();
+			sb.append("{");
+			sb.append(	"\"type\":\"chat\",");
+			sb.append("\"contents\":[{\"msg\":\""+msg+"\"},{\"time\":\""+time+"\"},{\"sender\":\""+sender+"\"}]");
+			sb.append("}");
+			
+			/*
+			obj.put(	"\"type\":\"chat\",");
+			obj.put("\"loc\" :\"서울\",");
+			obj.put("\"menus\":[{\"menu\":\"짜장\"},{\"menu\":\"짬뽕\"}]");
+			obj.put("}");
+			*/
+			String myString = sb.toString();
+			
+			System.out.println("클라이언트에서 서버로 보내는말: "+myString);
 			buffw.write(myString+"\n");
 			buffw.flush();
 		} catch (IOException e) {

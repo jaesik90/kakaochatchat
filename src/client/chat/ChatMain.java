@@ -55,13 +55,10 @@ public class ChatMain extends JDialog implements ActionListener{
 	JFileChooser chooser;
 	
 	KakaoMain main;
-	
-	public Chat chatDto=new Chat();
-	
+	 Chat chatDto;
 	
 	
 	
-
 	public ChatMain(KakaoMain main) {
 		this.main=main;
 		initGUI();
@@ -95,13 +92,13 @@ public class ChatMain extends JDialog implements ActionListener{
 		add(p_north, BorderLayout.NORTH);
 		
 		//센터영역
-		scroll = new JScrollPane();
 		table = new JTable();
+		scroll = new JScrollPane();
 		
 		table.setTableHeader(null);
 		table.setModel(model);
-		table.getColumnModel().getColumn(0).setCellRenderer(new ChatRenderer(this));
 		table.getColumnModel().getColumn(0).setPreferredWidth(260);
+		table.getColumnModel().getColumn(0).setCellRenderer(new ChatRenderer(this));
 		table.setBackground(Color.PINK);
 		table.setOpaque(true);
 		table.setShowHorizontalLines(false);
@@ -157,9 +154,11 @@ public class ChatMain extends JDialog implements ActionListener{
 		
 		
 		LoginPanel log=(LoginPanel)main.panel[0];
-		log.ct.sendMsg(msg);
-		log.ct.sendTime(time);
-		log.ct.sendSender(sender);
+		log.ct.sendMsg(msg,time,sender);
+		/*log.ct.sendTime(time);
+		log.ct.sendSender(sender);*/
+		
+		chatDto=log.ct.chatDto;
 		
 		model.addRow(chatDto);
 		area.setText("");

@@ -50,7 +50,7 @@ public class Client_chat extends JDialog implements ActionListener{
 				if(key==KeyEvent.VK_ENTER){
 					String msg=t_input.getText();
 					LoginPanel log=(LoginPanel)main.panel[0];
-					log.ct.sendMsg(msg);
+					//log.ct.sendMsg(msg);
 					t_input.setText("");
 				}
 			}

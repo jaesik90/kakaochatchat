@@ -14,14 +14,16 @@ public class MyModel extends AbstractTableModel{
 	
 	public void addRow(Chat chat) {
 		list.add(chat);
-		System.out.println(chat.getMsg());
-		System.out.println(chat.getSender());
-		System.out.println(chat.getTime());
+		
 		int len = list.size();
-		System.out.println("list.size의 크기:"+len);
+		if(list.size()>3){
+			System.out.println(list.get(0).getSender());
+			System.out.println(list.get(1).getSender());
+			System.out.println(list.get(2).getSender());
+		}
 		//System.out.println(list.get(0));
-		//this.fireTableRowsInserted(len-1, len-1);
-		//System.out.println("fire이후에 len의 길이: "+(len-1));
+		this.fireTableRowsInserted(len-1, len-1);
+		System.out.println("fire이후에 len의 길이: "+(len-1));
 
 	}
 	
